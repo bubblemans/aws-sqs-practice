@@ -22,7 +22,7 @@ func main() {
 	svc := sqs.New(sess)
 	queueURL := os.Getenv("QUEUE_URL")
 
-	// send(svc, queueURL)
+	send(svc, queueURL)
 	msgResult := receive(svc, queueURL)
 	delete(svc, queueURL, msgResult)
 }
