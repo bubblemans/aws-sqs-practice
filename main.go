@@ -14,16 +14,30 @@ const (
 	NUM_WORKERS   = 3
 )
 
+type SQS interface {
+	produce()
+	consume()
+}
+
+type Client struct {
+	svc      *sqs.SQS
+	queueURL string
+}
+
 func main() {
 	svc, queueURL := setup()
+	sqsClient := Client{
+		svc:      svc,
+		queueURL: queueURL,
+	}
 
 	// Publish messages to SQS asynchronously
 	for i := 0; i < MESSAGE_COUNT; i++ {
-		go produce(svc, queueURL)
+		go sqsClient.produce()
 	}
 
 	// Use a worker pool to consume messages
-	consume(svc, queueURL)
+	sqsClient.consume()
 }
 
 func setup() (*sqs.SQS, string) {

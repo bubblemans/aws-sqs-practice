@@ -8,7 +8,3 @@ This application is to simulate producer-consumer model using SQS as a middlewar
 ```
 go run .
 ```
-
-## TODO
-- Clean up codes using interface
-- How to optimize the app by changing `MaxNumberOfMessages` in `ReceiveMessageInput`?

@@ -8,17 +8,17 @@ import (
 	"github.com/aws/aws-sdk-go/service/sqs"
 )
 
-func consume(svc *sqs.SQS, queueURL string) {
+func (client Client) consume() {
 	// Use a worker pool to consume messages
 	messages := make(chan *sqs.ReceiveMessageOutput)
 
 	// spawning workers
 	for workerId := 1; workerId <= NUM_WORKERS; workerId++ {
-		go worker(svc, queueURL, workerId, messages)
+		go worker(client.svc, client.queueURL, workerId, messages)
 	}
 
 	for {
-		messages <- receive(svc, queueURL)
+		messages <- receive(client.svc, client.queueURL)
 	}
 }
 
